@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:movieapp/Home/Release_Latest/releases_container.dart';
+
 import 'package:movieapp/api/apimanager.dart';
+import 'package:movieapp/fire_base/watch_list.dart';
+
+
 import 'package:movieapp/model/SourceUpcoming.dart';
 import 'package:movieapp/theme.dart';
 
@@ -53,8 +57,10 @@ class Release_Latest extends StatelessWidget {
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
-                    return Releases_Container(
-                        imagePath: resultList[index].posterPath ?? '');
+                    return Releases_Container(results: resultList[index],
+                      imagePath: resultList[index].posterPath ?? '',
+                      favouriteMovie: onMovieFavourite(resultList[index]));
+
                   },
                   itemCount: resultList.length,
                 ),
@@ -62,5 +68,14 @@ class Release_Latest extends StatelessWidget {
             ]));
       },
     );
+  }
+  MovieData onMovieFavourite(Results_latest addedMovie){
+    Map<String, dynamic>  tmpmap ={
+      "title" : addedMovie.title,
+      "releaseDate": addedMovie.releaseDate,
+      "posterPath": "${addedMovie.posterPath}",
+    };
+    MovieData movieData = MovieData.fromJson(tmpmap);
+    return movieData;
   }
 }

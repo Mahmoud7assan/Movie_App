@@ -5,14 +5,14 @@
 /// total_results : 358
 
 class SourceUpcoming {
-  SourceUpcoming({
-      this.dates,
+  SourceUpcoming(
+      {this.dates,
       this.page,
       this.results,
       this.totalPages,
       this.totalResults,
-  this.Success,
-  this.StatusMessage});
+      this.Success,
+      this.StatusMessage});
 
   SourceUpcoming.fromJson(dynamic json) {
     dates = json['dates'] != null ? Dates.fromJson(json['dates']) : null;
@@ -22,15 +22,16 @@ class SourceUpcoming {
     if (json['results'] != null) {
       results = [];
       json['results'].forEach((v) {
-        results?.add(Results.fromJson(v));
+        results?.add(Results_latest.fromJson(v));
       });
     }
     totalPages = json['total_pages'];
     totalResults = json['total_results'];
   }
+
   Dates? dates;
   num? page;
-  List<Results>? results;
+  List<Results_latest>? results;
   num? totalPages;
   num? totalResults;
   String? StatusMessage;
@@ -49,7 +50,6 @@ class SourceUpcoming {
     map['total_results'] = totalResults;
     return map;
   }
-
 }
 
 /// adult : false
@@ -67,24 +67,25 @@ class SourceUpcoming {
 /// vote_average : 8.6
 /// vote_count : 2658
 
-class Results {
-  Results({
-      this.adult,
-      this.backdropPath,
-      this.genreIds,
-      this.id,
-      this.originalLanguage,
-      this.originalTitle,
-      this.overview,
-      this.popularity,
-      this.posterPath,
-      this.releaseDate,
-      this.title,
-      this.video,
-      this.voteAverage,
-      this.voteCount,});
+class Results_latest {
+  Results_latest({
+    this.adult,
+    this.backdropPath,
+    this.genreIds,
+    this.id,
+    this.originalLanguage,
+    this.originalTitle,
+    this.overview,
+    this.popularity,
+    this.posterPath,
+    this.releaseDate,
+    this.title,
+    this.video,
+    this.voteAverage,
+    this.voteCount,
+  });
 
-  Results.fromJson(dynamic json) {
+  Results_latest.fromJson(dynamic json) {
     adult = json['adult'];
     backdropPath = json['backdrop_path'];
     genreIds = json['genre_ids'] != null ? json['genre_ids'].cast<num>() : [];
@@ -100,10 +101,11 @@ class Results {
     voteAverage = json['vote_average'];
     voteCount = json['vote_count'];
   }
+
   bool? adult;
   String? backdropPath;
   List<num>? genreIds;
-  num? id;
+  int? id;
   String? originalLanguage;
   String? originalTitle;
   String? overview;
@@ -114,7 +116,6 @@ class Results {
   bool? video;
   num? voteAverage;
   num? voteCount;
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -134,7 +135,6 @@ class Results {
     map['vote_count'] = voteCount;
     return map;
   }
-
 }
 
 /// maximum : "2023-02-21"
@@ -142,13 +142,15 @@ class Results {
 
 class Dates {
   Dates({
-      this.maximum,
-      this.minimum,});
+    this.maximum,
+    this.minimum,
+  });
 
   Dates.fromJson(dynamic json) {
     maximum = json['maximum'];
     minimum = json['minimum'];
   }
+
   String? maximum;
   String? minimum;
 
@@ -158,5 +160,4 @@ class Dates {
     map['minimum'] = minimum;
     return map;
   }
-
 }

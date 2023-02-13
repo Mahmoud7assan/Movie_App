@@ -12,12 +12,13 @@ class MyTheme {
   static const Color colorBar = Color(0xff1A1A1A);
   static const Color iconcolorBar = Color(0xffC6C6C6);
   static ThemeData DarkMode = ThemeData(
-
       backgroundColor: black,
       textTheme: TextTheme(
         bodyLarge:
             TextStyle(fontSize: 14, color: white, fontWeight: FontWeight.bold),
         bodyMedium: TextStyle(
             fontSize: 10, color: Fontgray, fontWeight: FontWeight.w600),
+        titleLarge:
+            TextStyle(fontSize: 25, color: white, fontWeight: FontWeight.bold),
       ));
 }

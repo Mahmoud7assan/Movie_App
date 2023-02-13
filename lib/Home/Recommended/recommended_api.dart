@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:movieapp/Home/Popular/popular_movie.dart';
-import 'package:movieapp/Home/recomended_container.dart';
+
+import 'package:movieapp/Home/Recommended/recomended_container.dart';
+
 import 'package:movieapp/api/apimanager.dart';
+import 'package:movieapp/fire_base/watch_list.dart';
 import 'package:movieapp/model/SourceRecommended.dart';
 import 'package:movieapp/theme.dart';
 
@@ -55,10 +57,10 @@ class Recommended_api extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
                     return Recomended_Container(
-                        title: resultList[index].title ?? '',
-                        release: resultList[index].releaseDate ?? '',
-                        imagePath: resultList[index].posterPath ?? '',
-                        vote: resultList[index].voteAverage ?? 0);
+                      results: resultList[index],
+                      imagePath: resultList[index].posterPath ?? '',
+                      favouriteMovie: onMovieFavourite(resultList[index]),
+                    );
                   },
                   itemCount: resultList.length,
                 ),
@@ -68,5 +70,14 @@ class Recommended_api extends StatelessWidget {
         );
       },
     );
+  }
+  MovieData onMovieFavourite(Results addedMovie){
+    Map<String, dynamic>  tmpmap ={
+      "title" : addedMovie.title,
+      "releaseDate": addedMovie.releaseDate,
+      "posterPath": "${addedMovie.posterPath}",
+    };
+    MovieData movieData = MovieData.fromJson(tmpmap);
+    return movieData;
   }
 }

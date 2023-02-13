@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 
-import '../theme.dart';
+import '../../fire_base/database_utils.dart';
+import '../../fire_base/watch_list.dart';
+import '../../model/SourceRecommended.dart';
+import '../../theme.dart';
+import 'Details_recomended.dart';
 
-class Recomended_Container extends StatelessWidget {
-  String title;
-  String imagePath;
-  String release;
-  num vote;
+class Recomended_Container extends StatefulWidget {
+Results results;
+String imagePath;
+bool favourite;
+MovieData favouriteMovie;
+Recomended_Container({required this.imagePath, required this.favouriteMovie, this.favourite = false, required this.results});
 
-  Recomended_Container(
-      {required this.title,
-      required this.release,
-      required this.imagePath,
-      required this.vote});
+  @override
+  State<Recomended_Container> createState() => _Recomended_ContainerState();
+}
 
+class _Recomended_ContainerState extends State<Recomended_Container> {
   @override
   Widget build(BuildContext context) {
     var mediaquery = MediaQuery.of(context).size;
@@ -26,19 +30,30 @@ class Recomended_Container extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Stack(
-              children: [
-                Container(
-                  margin: EdgeInsets.all(8),
-                  child: Image.network(
-                      'https://image.tmdb.org/t/p/w500/$imagePath',
-                      height: mediaquery.height * 0.16),
-                ),
-                Image.asset(
-                  'assets/images/bookmark.png',
-                  height: 27,
-                )
-              ],
+            InkWell(
+              onTap: (){
+                Navigator.of(context).pushNamed(Details_recomended.routeName , arguments: widget.results);
+              },
+              child: Stack(
+                children: [
+                  Container(
+                    margin: EdgeInsets.all(8),
+                    child: Image.network(
+                        'https://image.tmdb.org/t/p/w500/${widget.results.posterPath}',
+                        height: mediaquery.height * 0.16),
+                  ),
+                  InkWell(onTap: (){
+                    widget.favourite = true;
+                    addFavouriteMovieToDatabase(widget.favouriteMovie);
+                    setState(() { });
+                  },
+                    child: Image.asset(
+                      'assets/images/bookmark.png',
+                      height: 27,
+                    ),
+                  )
+                ],
+              ),
             ),
             SizedBox(height: 2),
             Container(
@@ -55,7 +70,7 @@ class Recomended_Container extends StatelessWidget {
                       ),
                       SizedBox(width: 3),
                       Text(
-                        '$vote',
+                        '${widget.results.voteAverage}',
                         style: Theme.of(context)
                             .textTheme
                             .bodyLarge
@@ -65,7 +80,7 @@ class Recomended_Container extends StatelessWidget {
                   ),
                   SizedBox(height: 5),
                   Text(
-                    title,
+                    '${widget.results.title}',
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context)
                         .textTheme
@@ -74,7 +89,7 @@ class Recomended_Container extends StatelessWidget {
                   ),
                   SizedBox(height: 7),
                   Text(
-                    release,
+                    '${widget.results.releaseDate}',
                     style: Theme.of(context)
                         .textTheme
                         .bodyMedium

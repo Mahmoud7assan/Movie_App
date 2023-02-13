@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:movieapp/Home/Popular/popular_movie.dart';
+
 import 'package:movieapp/api/apimanager.dart';
+import 'package:/movieapp/fire_base/watch_list.dart';
 import 'package:movieapp/model/SourcePopular.dart';
-import 'package:movieapp/theme.dart';
+import '../../theme.dart';
+
 
 class Poplur_Container extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<SourcePopuler>(
+    return FutureBuilder<SourcePopular>(
       future: APIManager.getSources(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -38,15 +41,23 @@ class Poplur_Container extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
             return Popular_Movie(
-              title: resultList[index].title ?? '',
+              results: resultList[index],
               imagePath: resultList[index].posterPath ?? '',
-              backImage: resultList[index].backdropPath ?? '',
-              date: resultList[index].releaseDate ?? '',
+              favouriteMovie: onMovieFavourite(resultList[index]),
             );
           },
           itemCount: resultList.length,
         );
       },
     );
+  }
+  MovieData onMovieFavourite(Results addedMovie){
+    Map<String, dynamic>  tmpmap ={
+      "title" : addedMovie.title,
+      "releaseDate": addedMovie.releaseDate,
+      "posterPath": "${addedMovie.posterPath}",
+    };
+    MovieData movieData = MovieData.fromJson(tmpmap);
+    return movieData;
   }
 }
